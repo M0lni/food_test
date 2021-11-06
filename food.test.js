@@ -59,8 +59,11 @@ describe('Food tests', () => {
         const getResponseBody = JSON.parse(getResponse.body)
         expect(getResponseBody).toEqual(sajt)
     })
-    it('returns error for invalid id for GET', async () => {
-        const getResponse = await client.get('/api/food/invalid')
+    it('returns error for invalid id for GET', async () => {                    //v 6.0 ban megváltoztattam egy kicsit
+        let sajt = {'name': 'sajt', 'calories':50}
+
+        const postResponse = await client.post('/api/food', sajt)
+        const getResponse = await client.get('/api/food/invalid',sajt)
         expect(getResponse.code).toBe(404)
     })
     it ('updateable food', async () => {
@@ -112,5 +115,16 @@ describe('Food tests', () => {
 
         const getResponse1 = await client.get('/api/food/sajtId')
         expect(getResponse1.code).toBe(404)
+    })
+    it('returns error for invalid id for DELETE', async () => {
+        let sajt = {'name': 'sajt', 'calories':50}
+
+        const postResponse = await client.post('/api/food', sajt)
+        
+        
+        const deleteResponse = await client.delete('/api/food/abcd', sajt)
+        expect(deleteResponse.code).toBe(404)                                  
+
+
     })
 })
