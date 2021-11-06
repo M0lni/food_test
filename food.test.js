@@ -127,4 +127,17 @@ describe('Food tests', () => {
 
 
     })
+    it('returns error for különböző id for PUT', async () => {
+        let sajt = {'name': 'sajt', 'calories':50}
+
+        const postResponse = await client.post('/api/food', sajt)
+        const sajtId = JSON.parse(postResponse.body).id
+        sajt.id = sajtId
+        
+        const putResponse = await client.put('/api/food/abcd', sajt)                           
+
+        const putResponseBody = JSON.parse(putResponse.body)
+        expect(putResponse.code).toEqual(400)
+
+    })
 })
