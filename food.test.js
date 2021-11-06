@@ -59,7 +59,7 @@ describe('Food tests', () => {
         const getResponseBody = JSON.parse(getResponse.body)
         expect(getResponseBody).toEqual(sajt)
     })
-    it('returns error for invalid id', async () => {
+    it('returns error for invalid id for GET', async () => {
         const getResponse = await client.get('/api/food/invalid')
         expect(getResponse.code).toBe(404)
     })
@@ -85,5 +85,32 @@ describe('Food tests', () => {
         const getResponseBody = JSON.parse(getResponse.body)
         expect(getResponseBody).toEqual(sajt)
 
+    })
+    it('returns error for invalid id for PUT', async () => {
+        let sajt = {'name': 'sajt', 'calories':50}
+
+        const postResponse = await client.post('/api/food', sajt)
+        
+        
+        const putResponse = await client.put('/api/food/abcd', sajt)
+        expect(putResponse.code).toBe(404)                                  
+
+
+    })
+    it ('deletable food', async () => {
+        let sajt = {'name': 'sajt', 'calories':50}
+
+        const postResponse = await client.post('/api/food', sajt)
+        const sajtId = JSON.parse(postResponse.body).id
+        sajt.id = sajtId
+
+        const deleteResponse = await client.delete('/api/food/' + sajt.id)
+        expect(deleteResponse.code).toBe(204)
+
+        const getResponse = await client.get('/api/food')
+        expect(JSON.parse(getResponse.body)).toEqual(expect.not.arrayContaining([sajt]))
+
+        const getResponse1 = await client.get('/api/food/sajtId')
+        expect(getResponse1.code).toBe(404)
     })
 })
