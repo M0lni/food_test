@@ -46,4 +46,18 @@ describe('Food tests', () => {
         expect(getResponseBody).toContainEqual(sajt)
         expect(getResponseBody).toContainEqual(alma)
     })
+    it('get command works based on id', async () => {
+        let sajt = {'name': 'sajt', 'calories':50}
+
+        const postResponse = await client.post('/api/food', sajt)
+        const sajtId = JSON.parse(postResponse.body).id
+
+        const getResponse = await client.get('/api/food/' + sajtId)
+        expect(getResponse.code).toBe(200)
+        sajt.id = sajtId
+
+        const getResponseBody = JSON.parse(getResponse.body)
+        expect(getResponseBody).toEqual(sajt)
+    })
+
 })
