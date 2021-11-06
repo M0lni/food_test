@@ -59,5 +59,31 @@ describe('Food tests', () => {
         const getResponseBody = JSON.parse(getResponse.body)
         expect(getResponseBody).toEqual(sajt)
     })
+    it('returns error for invalid id', async () => {
+        const getResponse = await client.get('/api/food/invalid')
+        expect(getResponse.code).toBe(404)
+    })
+    it ('updateable food', async () => {
+        let sajt = {'name': 'sajt', 'calories':50}
 
+        const postResponse = await client.post('/api/food', sajt)
+        const sajtId = JSON.parse(postResponse.body).id
+        sajt.id = sajtId
+
+        sajt.name = 'SAJT'
+        sajt.calories=800
+        const putResponse = await client.put('/api/food/' + sajtId, sajt)
+        expect(putResponse.code).toBe(200)
+
+        const putResponseBody = JSON.parse(putResponse.body)
+        expect(putResponseBody).toEqual(sajt)
+
+        const getResponse = await client.get('/api/food/' + sajtId)
+        expect(getResponse.code).toBe(200)
+        sajt.id = sajtId
+
+        const getResponseBody = JSON.parse(getResponse.body)
+        expect(getResponseBody).toEqual(sajt)
+
+    })
 })
