@@ -59,11 +59,9 @@ describe('Food tests', () => {
         const getResponseBody = JSON.parse(getResponse.body)
         expect(getResponseBody).toEqual(sajt)
     })
-    it('returns error for invalid id for GET', async () => {                    //v 6.0 ban megváltoztattam egy kicsit
-        let sajt = {'name': 'sajt', 'calories':50}
-
-        const postResponse = await client.post('/api/food', sajt)
-        const getResponse = await client.get('/api/food/invalid',sajt)
+    it('returns error for invalid id for GET', async () => {                    //v 6.0, 11.0 ban megváltoztattam egy kicsit
+        
+        const getResponse = await client.get('/api/food/invalid')
         expect(getResponse.code).toBe(404)
     })
     it ('updateable food', async () => {
@@ -90,12 +88,12 @@ describe('Food tests', () => {
 
     })
     it('returns error for invalid id for PUT', async () => {
-        let sajt = {'name': 'sajt', 'calories':50}
+        let sajt = {'name': 'sajt', 'calories':50, 'id':'abcd5214'}
 
-        const postResponse = await client.post('/api/food', sajt)
         
         
-        const putResponse = await client.put('/api/food/abcd', sajt)
+        
+        const putResponse = await client.put('/api/food/abcd5214', sajt)
         expect(putResponse.code).toBe(404)                                  
 
 
@@ -117,12 +115,12 @@ describe('Food tests', () => {
         expect(getResponse1.code).toBe(404)
     })
     it('returns error for invalid id for DELETE', async () => {
-        let sajt = {'name': 'sajt', 'calories':50}
+        let sajt = {'name': 'sajt', 'calories':50,'id':'abcd5214'}
 
-        const postResponse = await client.post('/api/food', sajt)
         
         
-        const deleteResponse = await client.delete('/api/food/abcd', sajt)
+        
+        const deleteResponse = await client.delete('/api/food/abcd5214', sajt)
         expect(deleteResponse.code).toBe(404)                                  
 
 
